@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Casa imunda do Iago</title>
+<style>
+body {
+  background: black;
+  color: white;
+  font-family: Arial;
+  text-align: center;
+}
+#game {
+  width: 300px;
+  height: 300px;
+  margin: auto;
+  background: #222;
+  position: relative;
+  border: 3px solid white;
+}
+.player {
+  width: 20px;
+  height: 20px;
+  background: blue;
+  position: absolute;
+}
+.item {
+  width: 15px;
+  height: 15px;
+  background: yellow;
+  position: absolute;
+}
+.door {
+  width: 30px;
+  height: 30px;
+  background: red;
+  position: absolute;
+}
+button {
+  margin: 5px;
+  padding: 10px;
+}
+</style>
+</head>
+<body>
+
+<h2>Casa imunda do Iago</h2>
+<p id="status">Ache a chave!</p>
+
+<div id="game">
+  <div class="player" id="player"></div>
+  <div class="item" id="key"></div>
+  <div class="door" id="door"></div>
+</div>
+
+<br>
+<button onclick="move(0,-10)">⬆️</button><br>
+<button onclick="move(-10,0)">⬅️</button>
+<button onclick="move(10,0)">➡️</button><br>
+<button onclick="move(0,10)">⬇️</button>
+
+<script>
+let player = document.getElementById("player");
+let key = document.getElementById("key");
+let door = document.getElementById("door");
+let status = document.getElementById("status");
+
+let px = 10, py = 10;
+let hasKey = false;
+
+player.style.left = px + "px";
+player.style.top = py + "px";
+
+key.style.left = "200px";
+key.style.top = "50px";
+
+door.style.left = "250px";
+door.style.top = "250px";
+
+function move(x,y){
+  px += x;
+  py += y;
+
+  px = Math.max(0, Math.min(280, px));
+  py = Math.max(0, Math.min(280, py));
+
+  player.style.left = px + "px";
+  player.style.top = py + "px";
+
+  checkCollision();
+}
+
+function checkCollision(){
+  if (!hasKey &&
+      Math.abs(px - 200) < 15 &&
+      Math.abs(py - 50) < 15) {
+    hasKey = true;
+    key.style.display = "none";
+    status.innerText = "Você pegou a chave!";
+  }
+
+  if (hasKey &&
+      Math.abs(px - 250) < 20 &&
+      Math.abs(py - 250) < 20) {
+    status.innerText = "Você fugiu da imundice!";
+  }
+}
+</script>
+
+</body>
+</html>
